@@ -1,62 +1,56 @@
 "use client";
 import { createContext, useContext, useEffect, useState } from "react";
-import {get} from "../utils/api";
 
-type Stock = {
-  name: string;
-  price: number;
-  change: string;
-  volume: string;
-};
+const MarketContext = createContext<any>(null);
 
-type MarketContextType = {
-  stocks: Stock[];
-  loading: boolean;
-};
-
-const MarketContext = createContext<MarketContextType | undefined>(undefined);
-
-export function MarketProvider({ children }: { children: React.ReactNode }) {
-  const [stocks, setStocks] = useState<Stock[]>([]);
+export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
+  const [stocks, setStocks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [prevPrices, setPrevPrices] = useState<Record<string, number>>({});
+const [lastupdatedate,setLastUpdateDate]=useState<any>("")
   useEffect(() => {
-    const fetchMarketData = async () => {
-      try {
-        const response = await get("/market-data");
-        setStocks(response.data);
-      } catch (error) {
-        console.error("Error fetching market data:", error);
-      } finally {
-        setLoading(false);
-      }
+    const socket = new WebSocket("ws://localhost:5000"); // Adjust WebSocket URL if needed
+
+    socket.onopen = () => {
+      console.log("✅ WebSocket Connected");
     };
 
-    fetchMarketData();
-
-    // 🔥 Connect WebSocket for real-time updates
-    const ws = new WebSocket("ws://localhost:5000");
-
-    ws.onmessage = (event) => {
-      const updatedStocks = JSON.parse(event.data);
-      console.log("hello")
-      setStocks(updatedStocks);
+    socket.onmessage = (event) => {
+      const liveData = JSON.parse(event.data);
+      setStocks(liveData); // Update stock data in state
+      setLoading(false);
+      setLastUpdateDate(Date.now());
     };
 
-    return () => ws.close(); // Cleanup WebSocket on unmount
+    socket.onerror = (error) => {
+      console.error("❌ WebSocket Error:", error);
+    };
+
+    socket.onclose = () => {
+      console.log("❌ WebSocket Disconnected");
+      setTimeout(() => {
+        window.location.reload(); // Simple reconnect logic (can be improved)
+      }, 5000);
+    };
+
+    return () => socket.close();
   }, []);
+  useEffect(() => {
+    const newPrevPrices = stocks.reduce((acc, stock) => {
+      acc[stock.name] = stock.price;
+      return acc;
+    }, {} as Record<string, number>);
+  
+    setPrevPrices(newPrevPrices);
+  }, [stocks]);
 
   return (
-    <MarketContext.Provider value={{ stocks, loading }}>
+    <MarketContext.Provider value={{ stocks, loading,lastupdatedate }}>
       {children}
     </MarketContext.Provider>
   );
-}
+};
 
-export function useMarket() {
-  const context = useContext(MarketContext);
-  if (!context) {
-    throw new Error("useMarket must be used within a MarketProvider");
-  }
-  return context;
-}
+export const useMarket = () => {
+  return useContext(MarketContext);
+};

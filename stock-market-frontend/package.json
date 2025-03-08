@@ -16,6 +16,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106",
     "react-icons": "^5.5.0",
     "stock-market-frontend": "file:",
+    "swr": "^2.3.3",
     "ws": "^8.18.1"
   },
   "devDependencies": {
