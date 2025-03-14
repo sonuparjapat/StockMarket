@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FaChartLine, FaGlobe, FaFire, FaRocket, FaHome } from "react-icons/fa";
+import { FaChartLine, FaGlobe, FaFire, FaRocket, FaHome, FaClipboardList, FaSearch } from "react-icons/fa";
 
 export default function Sidebar() {
   return (
@@ -9,11 +9,11 @@ export default function Sidebar() {
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
           <FaHome /> Dashboard
         </li>
-        <Link href="/market-watch">
-  <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
-    <FaChartLine /> Market Watch
-  </li>
-</Link>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/market-watch" className="flex items-center gap-3 w-full">
+            <FaChartLine /> Market Watch
+          </Link>
+        </li>
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
           <FaGlobe /> World Finance
         </li>
@@ -22,6 +22,18 @@ export default function Sidebar() {
         </li>
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
           <FaRocket /> IPOs
+        </li>
+        
+        {/* New Sections */}
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/order-book" className="flex items-center gap-3 w-full">
+            <FaClipboardList /> Order Book
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/stock-analysis" className="flex items-center gap-3 w-full">
+            <FaSearch /> Stock Analysis
+          </Link>
         </li>
       </ul>
     </div>

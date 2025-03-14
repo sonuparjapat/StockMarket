@@ -12,7 +12,8 @@ const useWebSocket = (url: string) => {
 
     socket.onmessage = (event) => {
       const newData = JSON.parse(event.data);
-      setData((prevData) => [...prevData, ...newData]); // Updating stock data
+      // setData((prevData) => [...prevData, ...newData]); // Updating stock 
+      setData(newData);
     };
 
     socket.onerror = (error) => {
