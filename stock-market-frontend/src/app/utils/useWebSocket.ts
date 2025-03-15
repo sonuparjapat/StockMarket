@@ -1,33 +1,64 @@
+"use client";
 import { useEffect, useState } from "react";
 
 const useWebSocket = (url: string) => {
-  const [data, setData] = useState<any[]>([]);
+  const [stocks, setStocks] = useState<any[]>([]); // ✅ Market Data
+  const [orderBook, setOrderBook] = useState<any>(null); // ✅ Order Book Data
+  const [loading, setLoading] = useState(true); // ✅ Loading State
+  const [lastUpdateDate, setLastUpdateDate] = useState<Date | null>(null); // ✅ Last Update Time
 
   useEffect(() => {
-    const socket = new WebSocket(url);
+    let socket: WebSocket;
+    let reconnectTimer: NodeJS.Timeout;
 
-    socket.onopen = () => {
-      console.log("WebSocket Connected ✅");
+    const connectWebSocket = () => {
+      socket = new WebSocket(url);
+
+      socket.onopen = () => {
+        console.log("WebSocket Connected ✅");
+        clearTimeout(reconnectTimer);
+      };
+
+      socket.onmessage = (event) => {
+        try {
+          const receivedData = JSON.parse(event.data);
+
+          if (receivedData.type === "stocks") {
+            setStocks(receivedData.data);
+           // ✅ Market Data
+            setLastUpdateDate(new Date()); // ✅ Update Time
+          } else if (receivedData.type === "orderBook") {
+            setOrderBook(receivedData.data); // ✅ Order Book Data
+            setLastUpdateDate(new Date()); // ✅ Update Time
+          } else {
+            console.warn("Unknown WebSocket message type ⚠️", receivedData);
+          }
+
+          setLoading(false); // ✅ Data received, stop loading
+        } catch (error) {
+          console.error("Error parsing WebSocket data ❌", error);
+        }
+      };
+
+      socket.onerror = (error) => {
+        console.error("WebSocket Error ❌", error);
+      };
+
+      socket.onclose = () => {
+        console.log("WebSocket Disconnected ❌, Reconnecting...");
+        reconnectTimer = setTimeout(connectWebSocket, 2000);
+      };
     };
 
-    socket.onmessage = (event) => {
-      const newData = JSON.parse(event.data);
-      // setData((prevData) => [...prevData, ...newData]); // Updating stock 
-      setData(newData);
-    };
+    connectWebSocket();
 
-    socket.onerror = (error) => {
-      console.error("WebSocket Error ❌", error);
+    return () => {
+      socket.close();
+      clearTimeout(reconnectTimer);
     };
-
-    socket.onclose = () => {
-      console.log("WebSocket Disconnected ❌");
-    };
-
-    return () => socket.close();
   }, [url]);
-
-  return data;
+console.log(lastUpdateDate,"lastupdate date")
+  return { stocks, orderBook, loading, lastUpdateDate };
 };
 
 export default useWebSocket;

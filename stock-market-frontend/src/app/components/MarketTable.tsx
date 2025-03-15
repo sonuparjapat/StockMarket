@@ -9,7 +9,8 @@ import io from "socket.io-client";
 const socket = io("http://localhost:5000");
 export default function MarketTable() {
 
-  const { stocks, loading, lastupdatedate } = useMarket();
+  const { stocks, loading, lastUpdateDate } = useMarket();
+
   const [sortedStocks, setSortedStocks] = useState<any[]>([]);
   const [sortKey, setSortKey] = useState<string>("price");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -23,17 +24,19 @@ export default function MarketTable() {
   const [debouncedSearch, setDebouncedSearch] = useState<string>("");
   const previousPrices = useRef<Record<string, number | undefined>>({});
   const rowsPerPage = 10; // ✅ Show only 10 stocks per page
-  console.log(lastupdatedate, "last");
+  console.log(lastUpdateDate, "last");
 
   useEffect(() => {
-    socket.on("stockUpdate", (updatedStock) => {
-      const change = parseFloat(updatedStock.change);
-      
-      if (change >= 5) {
-        setAlerts((prev) => [`🔥 ${updatedStock.name} is up ${change}%! 📈`, ...prev]);
-      } else if (change <= -5) {
-        setAlerts((prev) => [`⚠️ ${updatedStock.name} dropped ${change}%! 📉`, ...prev]);
-      }
+    socket.on("stocks", (updatedStocks) => {
+      updatedStocks.forEach((updatedStock:any) => {
+        const change = parseFloat(updatedStock.change);
+  
+        if (change >= 5) {
+          setAlerts((prev) => [`🔥 ${updatedStock.name} is up ${change}%! 📈`, ...prev]);
+        } else if (change <= -5) {
+          setAlerts((prev) => [`⚠️ ${updatedStock.name} dropped ${change}%! 📉`, ...prev]);
+        }
+      });
     });
   
     return () => socket.off("stockUpdate");
@@ -91,17 +94,17 @@ export default function MarketTable() {
   }, [searchQuery]);
 
   useEffect(() => {
-    if (!lastupdatedate) return;
-  
+    if (!lastUpdateDate) return;
+  console.log(lastUpdateDate,"lastupdate")
     const updateAgo = () => {
-      setTimeAgo(Math.floor((Date.now() - lastupdatedate) / 1000));
+      setTimeAgo(Math.floor((Date.now() - lastUpdateDate) / 1000));
     };
   
     updateAgo(); // Run immediately
     const interval = setInterval(updateAgo, 1000);
   
     return () => clearInterval(interval);
-  }, [lastupdatedate]); // ✅ Only update when `lastupdatedate` changes
+  }, [lastUpdateDate]); // ✅ Only update when `lastUpdateDate` changes
 
  
   // ✅ Pagination Logic
@@ -115,7 +118,7 @@ export default function MarketTable() {
       previousPrices.current[stock.name] = stock.price;
     });
   }, [currentStocks]);
-  
+
   const totalUp = stocks.filter((s) => parseFloat(s.change) > 0).length;
   const totalDown = stocks.filter((s) => parseFloat(s.change) < 0).length;
   const totalVolume = stocks.reduce((acc, s) => acc + parseFloat(s.volume), 0);
