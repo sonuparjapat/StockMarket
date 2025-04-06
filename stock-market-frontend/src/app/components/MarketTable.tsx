@@ -6,7 +6,7 @@ import styles from './MarketTable.module.css';
 import io from "socket.io-client";
 
 // Connect WebSocket to backend
-const socket = io(`${process.env.BACKEND_URL}`);
+const socket = io(`${process.env.NEXT_PUBLIC_BACKEND_URL}`);
 export default function MarketTable() {
 
   const { stocks, loading, lastUpdateDate } = useMarket();

@@ -139,15 +139,36 @@ const wss = new WebSocket.Server({ server });
 wss.on("connection", (ws) => {
   console.log("Client connected");
 
-  const sendData = () => {
-    ws.send(JSON.stringify({ stocks, orderBook, lastUpdateDate: new Date() }));
+  // Send Stocks Data
+  const sendStocksData = () => {
+    ws.send(
+      JSON.stringify({
+        type: "stocks",
+        data: stocks,
+        lastUpdateDate: new Date(),
+      })
+    );
   };
 
-  sendData();
+  // Send OrderBook Data
+  const sendOrderBookData = () => {
+    ws.send(
+      JSON.stringify({
+        type: "orderBook",
+        data: orderBook,
+        lastUpdateDate: new Date(),
+      })
+    );
+  };
+
+  // Initial Send
+  sendStocksData();
+  sendOrderBookData();
 
   const interval = setInterval(() => {
-    updateStocks();
-    sendData();
+    updateStocks(); // Update Random Stocks
+    sendStocksData();
+    sendOrderBookData();
   }, 3000);
 
   ws.on("close", () => {
