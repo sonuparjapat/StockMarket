@@ -1,8 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
+import { Stock } from "../types/stock";
 
 const useWebSocket = (url: string) => {
-  const [stocks, setStocks] = useState<any[]>([]); // ✅ Market Data
+  const [stocks, setStocks] = useState<Stock[]>([]); // ✅ Market Data
   const [orderBook, setOrderBook] = useState<any>(null); // ✅ Order Book Data
   const [loading, setLoading] = useState(true); // ✅ Loading State
   const [lastUpdateDate, setLastUpdateDate] = useState<Date | null>(null); // ✅ Last Update Time
@@ -15,7 +16,7 @@ const useWebSocket = (url: string) => {
       socket = new WebSocket(url);
 
       socket.onopen = () => {
-        console.log("WebSocket Connected ✅");
+        // console.log("WebSocket Connected ✅");
         clearTimeout(reconnectTimer);
       };
 
@@ -57,7 +58,7 @@ const useWebSocket = (url: string) => {
       clearTimeout(reconnectTimer);
     };
   }, [url]);
-console.log(lastUpdateDate,"lastupdate date")
+// console.log(lastUpdateDate,"lastupdate date")
   return { stocks, orderBook, loading, lastUpdateDate };
 };
 

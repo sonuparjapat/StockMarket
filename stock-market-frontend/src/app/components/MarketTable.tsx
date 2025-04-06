@@ -27,7 +27,7 @@ export default function MarketTable() {
   console.log(lastUpdateDate, "last");
 
   useEffect(() => {
-    socket.on("stocks", (updatedStocks) => {
+    const handleStocks = (updatedStocks) => {
       updatedStocks.forEach((updatedStock:any) => {
         const change = parseFloat(updatedStock.change);
   
@@ -37,10 +37,24 @@ export default function MarketTable() {
           setAlerts((prev) => [`⚠️ ${updatedStock.name} dropped ${change}%! 📉`, ...prev]);
         }
       });
-    });
+    }
   
-    return () => socket.off("stockUpdate");
+    socket.on("stocks", handleStocks);
+  
+    return () => {
+      socket.off("stocks", handleStocks);
+    };
   }, []);
+
+  useEffect(() => {
+    if (alerts.length > 5) {
+      const timer = setTimeout(() => {
+        setAlerts((prev) => prev.slice(0, 5));  // Keep only latest 5 alerts
+      }, 5000); // 5 sec delay
+  
+      return () => clearTimeout(timer);
+    }
+  }, [alerts]);
   // ✅ Filtering & Sorting Stocks
   const filteredAndSortedStocks = useMemo(() => {
     console.log("🔄 Running Filtering & Sorting...");
@@ -131,10 +145,10 @@ export default function MarketTable() {
 
   return (
     <div className="bg-white shadow-md rounded-lg p-4">
-      <div className="bg-yellow-100 p-4 rounded shadow mb-4">
+   <div className="bg-yellow-100 p-4 rounded shadow mb-4">
   <h2 className="text-xl font-bold text-yellow-700">🔔 Stock Alerts</h2>
   <ul className="mt-2 text-sm">
-    {alerts.slice(0, 5).map((alert, index) => (
+    {alerts.map((alert, index) => (
       <li key={index} className="text-gray-700">{alert}</li>
     ))}
   </ul>

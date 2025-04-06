@@ -1,20 +1,19 @@
 "use client";
 import { createContext, useContext, useState, useEffect } from "react";
-import useWebSocket from "../utils/useWebSocket";// ✅ Import our WebSocket Hook
+import useWebSocket from "../utils/useWebSocket"; // ✅ Your Old Hook
 
 const MarketContext = createContext<any>(null);
 
-export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
-  const { stocks, loading, lastUpdateDate } = useWebSocket("ws://localhost:5000/market"); // ✅ Use WebSocket Hook
+export const MarketProvider = ({ children }) => {
+  const { stocks, loading, lastUpdateDate } = useWebSocket("ws://localhost:5000/market");
 
-  const [prevPrices, setPrevPrices] = useState<Record<string, number>>({});
+  const [prevPrices, setPrevPrices] = useState({});
 
   useEffect(() => {
-    // ✅ Track previous prices for change comparison
     const newPrevPrices = stocks.reduce((acc, stock) => {
       acc[stock.symbol] = stock.price;
       return acc;
-    }, {} as Record<string, number>);
+    }, {});
 
     setPrevPrices(newPrevPrices);
   }, [stocks]);
@@ -26,7 +25,4 @@ export const MarketProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// ✅ Custom Hook for Market Data
-export const useMarket = () => {
-  return useContext(MarketContext);
-};
+export const useMarket = () => useContext(MarketContext);

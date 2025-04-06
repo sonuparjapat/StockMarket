@@ -15,7 +15,34 @@ export default function Sidebar() {
           </Link>
         </li>
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
-          <FaGlobe /> World Finance
+          <Link href="/my-watchlist" className="flex items-center gap-3 w-full">
+            <FaChartLine /> My WatchList
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/top-movers" className="flex items-center gap-3 w-full">
+            <FaChartLine /> Top Movers
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/ipo" className="flex items-center gap-3 w-full">
+            <FaChartLine /> IPO
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/trending" className="flex items-center gap-3 w-full">
+            <FaChartLine /> Trending
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/trends" className="flex items-center gap-3 w-full">
+            <FaChartLine /> Trends
+          </Link>
+        </li>
+        <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
+          <Link href="/world-news" className="flex items-center gap-3 w-full">
+            <FaChartLine /> World News
+          </Link>
         </li>
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">
           <FaFire /> Trends
