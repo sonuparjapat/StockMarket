@@ -30,4 +30,8 @@ let stocks = [
     });
   };
   
-  module.exports = { updateStocks, stocks, orderBook };
+  const getStocks = () => stocks;
+  const getOrderBook = () => orderBook;
+  
+  module.exports = { updateStocks, getStocks, getOrderBook };
+  
