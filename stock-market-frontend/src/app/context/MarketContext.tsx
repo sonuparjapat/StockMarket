@@ -5,7 +5,7 @@ import useWebSocket from "../utils/useWebSocket"; // ✅ Your Old Hook
 const MarketContext = createContext<any>(null);
 
 export const MarketProvider = ({ children }) => {
-  const { stocks, loading, lastUpdateDate } = useWebSocket("ws://localhost:5000/market");
+  const { stocks, loading, lastUpdateDate } = useWebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}`);
 
   const [prevPrices, setPrevPrices] = useState({});
 
