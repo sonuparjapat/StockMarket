@@ -14,7 +14,9 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 app.use(bodyParser.json());
-
+app.get("/",(req,res)=>{
+  res.json({status:200,msg:"Welcome to The Stock Market"})
+})
 // Initial Stocks Data
 let stocks = [
   { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
