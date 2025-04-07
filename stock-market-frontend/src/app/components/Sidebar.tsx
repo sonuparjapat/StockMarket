@@ -3,7 +3,7 @@ import { FaChartLine, FaGlobe, FaFire, FaRocket, FaHome, FaClipboardList, FaSear
 
 export default function Sidebar() {
   return (
-    <div className="w-64 h-full bg-blue-900 text-white p-6">
+    <div className="w-64 h-[100vh] overflow-auto  scrollbar-hide bg-blue-900 text-white p-6">
       <h2 className="text-2xl font-bold">Finance Portal</h2>
       <ul className="mt-6 space-y-4">
         <li className="flex items-center gap-3 p-2 hover:bg-blue-700 rounded cursor-pointer">

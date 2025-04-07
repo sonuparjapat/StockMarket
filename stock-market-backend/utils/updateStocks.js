@@ -2,6 +2,18 @@ let stocks = [
     { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
     { name: "TCS", price: 3500, change: "-1.2%", volume: "5M", direction: "down" },
     { name: "HDFC", price: 2900, change: "+0.8%", volume: "3M", direction: "up" },
+    { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
+    { name: "TCS", price: 3500, change: "-1.2%", volume: "5M", direction: "down" },
+    { name: "HDFC", price: 2900, change: "+0.8%", volume: "3M", direction: "up" },
+    { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
+    { name: "TCS", price: 3500, change: "-1.2%", volume: "5M", direction: "down" },
+    { name: "HDFC", price: 2900, change: "+0.8%", volume: "3M", direction: "up" },
+    { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
+    { name: "TCS", price: 3500, change: "-1.2%", volume: "5M", direction: "down" },
+    { name: "HDFC", price: 2900, change: "+0.8%", volume: "3M", direction: "up" },
+    { name: "Reliance", price: 2450, change: "+2.5%", volume: "10M", direction: "up" },
+    { name: "TCS", price: 3500, change: "-1.2%", volume: "5M", direction: "down" },
+    { name: "HDFC", price: 2900, change: "+0.8%", volume: "3M", direction: "up" },
   ];
   
   const orderBook = {

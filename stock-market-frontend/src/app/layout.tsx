@@ -7,12 +7,12 @@ import "./globals.css";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="flex h-screen bg-gray-100">
+      <body className="flex bg-gray-100">
         <MarketProvider>
           <Sidebar />
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col h-[100vh] overflow-auto scrollbar-hide">
             <Navbar />
-            <main className="p-4">{children}</main>
+            <main className="p-4 ">{children}</main>
           </div>
         </MarketProvider>
 
