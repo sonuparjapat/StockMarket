@@ -137,7 +137,7 @@ const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 
 wss.on("connection", (ws) => {
-  console.log("Client connected");
+  console.log("Client connected Successfully");
 
   // Send Stocks Data
   const sendStocksData = () => {
