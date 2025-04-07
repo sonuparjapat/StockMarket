@@ -32,6 +32,6 @@ let stocks = [
   
   const getStocks = () => stocks;
   const getOrderBook = () => orderBook;
-  
+  console.log(getStocks())
   module.exports = { updateStocks, getStocks, getOrderBook };
   

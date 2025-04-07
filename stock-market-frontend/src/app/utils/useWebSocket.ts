@@ -23,7 +23,7 @@ const useWebSocket = (url: string) => {
       socket.onmessage = (event) => {
         try {
           const receivedData = JSON.parse(event.data);
-
+console.log(receivedData,"receiveddata")
           if (receivedData.type === "stocks") {
             setStocks(receivedData.data);
            // ✅ Market Data

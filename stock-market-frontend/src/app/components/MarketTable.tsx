@@ -28,7 +28,7 @@ export default function MarketTable() {
 
   useEffect(() => {
     const handleStocks = (updatedStocks) => {
-      updatedStocks.forEach((updatedStock:any) => {
+      updatedStocks?.forEach((updatedStock:any) => {
         const change = parseFloat(updatedStock.change);
   
         if (change >= 5) {
@@ -62,14 +62,14 @@ export default function MarketTable() {
     let filteredStocks = [...stocks];
 
     if (filter === "gainers") {
-      filteredStocks = filteredStocks.filter((s) => parseFloat(s.change) > 0);
+      filteredStocks = filteredStocks?.filter((s) => parseFloat(s.change) > 0);
     } else if (filter === "losers") {
-      filteredStocks = filteredStocks.filter((s) => parseFloat(s.change) < 0);
+      filteredStocks = filteredStocks?.filter((s) => parseFloat(s.change) < 0);
     }
 
     if (debouncedSearch.trim() !== "") {
       const query = debouncedSearch.toLowerCase();
-      filteredStocks = filteredStocks.filter((s) =>
+      filteredStocks = filteredStocks?.filter((s) =>
         s.name.toLowerCase().includes(query)
       );
     }
@@ -83,7 +83,7 @@ export default function MarketTable() {
 
   const topGainers = useMemo(() => {
     return [...stocks]
-      .filter((s) => parseFloat(s.change) > 0)
+      ?.filter((s) => parseFloat(s.change) > 0)
       .sort((a, b) => parseFloat(b.change) - parseFloat(a.change))
       .slice(0, 5);
   }, [stocks]);
@@ -133,9 +133,9 @@ export default function MarketTable() {
     });
   }, [currentStocks]);
 
-  const totalUp = stocks.filter((s) => parseFloat(s.change) > 0).length;
-  const totalDown = stocks.filter((s) => parseFloat(s.change) < 0).length;
-  const totalVolume = stocks.reduce((acc, s) => acc + parseFloat(s.volume), 0);
+  const totalUp = stocks?.filter((s) => parseFloat(s.change) > 0).length;
+  const totalDown = stocks?.filter((s) => parseFloat(s.change) < 0).length;
+  const totalVolume = stocks?.reduce((acc, s) => acc + parseFloat(s.volume), 0);
   
   // Determine Market Trend
   const marketTrend =
@@ -168,7 +168,7 @@ export default function MarketTable() {
   <div className="p-4 bg-green-100 rounded shadow">
     <h3 className="text-lg font-semibold text-green-700">🚀 Top 5 Gainers</h3>
     <ul>
-      {topGainers.map((stock) => (
+      {topGainers?.map((stock) => (
         <li key={stock.name} className="flex justify-between">
           <span>{stock.name}</span>
           <span className="font-bold text-green-600">+{stock.change}%</span>

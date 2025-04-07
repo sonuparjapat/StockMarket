@@ -10,8 +10,8 @@ export const MarketProvider = ({ children }) => {
   const [prevPrices, setPrevPrices] = useState({});
 
   useEffect(() => {
-    const newPrevPrices = stocks.reduce((acc, stock) => {
-      acc[stock.symbol] = stock.price;
+    const newPrevPrices = stocks?.reduce((acc, stock) => {
+      acc[stock.symbol] = stock?.price;
       return acc;
     }, {});
 

@@ -131,7 +131,7 @@ dotenv.config();
 const http = require("http");
 const WebSocket = require("ws");
 const app = require("./app");
-const { updateStocks, stocks, orderBook } = require("./utils/updateStocks");
+const { updateStocks, getStocks, getOrderBook } = require("./utils/updateStocks");
 
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
@@ -141,10 +141,11 @@ wss.on("connection", (ws) => {
 
   // Send Stocks Data
   const sendStocksData = () => {
+    // console.log(getStocks(),"stock")
     ws.send(
       JSON.stringify({
         type: "stocks",
-        data: stocks,
+        data: getStocks()||[],
         lastUpdateDate: new Date(),
       })
     );
@@ -155,7 +156,7 @@ wss.on("connection", (ws) => {
     ws.send(
       JSON.stringify({
         type: "orderBook",
-        data: orderBook,
+        data: getOrderBook(),
         lastUpdateDate: new Date(),
       })
     );
